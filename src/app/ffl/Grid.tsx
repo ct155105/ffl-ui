@@ -16,7 +16,7 @@ const [colDefs, setColDefs] = useState<ColDef<RbData>[]>([
     { field: "position" },
     { field: "team_name" },
     { field: "player_game_count" },
-    { field: "attempts", type: "number" },
+    { field: "attempts" },
     { field: "avoided_tackles" },
     { field: "breakaway_attempts" },
 ]); 
