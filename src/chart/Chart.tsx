@@ -6,12 +6,12 @@ import * as echarts from "echarts";
 interface DataPoint {
   player: string;
   rank: number;
-  touchdowns: number;
+  points: number;
 }
 
 interface PositionDataSeries {
   data: DataPoint[];
-  position: "rb" | "wr";
+  position: "rb" | "wr" | "qb" | "te";
 }
 
 const Chart = ({
@@ -35,7 +35,11 @@ const Chart = ({
             right: 10,
             top: 'center'
         },
-        // tooltip: {},
+        tooltip: {
+            formatter: function(params) {
+                return params.seriesName + ' ' + params.value[2];
+            }
+        },
         xAxis: {
         },
         yAxis: {},
@@ -44,30 +48,27 @@ const Chart = ({
               type: "scatter",
               datasetIndex: index,
               name: positionData.position,
-              emphasis: {
-                focus: 'series',
-                label: {
-                  show: true,
-                  formatter: function(param) {
-                    return param.data[2];
-                  },
-                  position: 'top'
-                }
-              },
+            //   emphasis: {
+            //     focus: 'series',
+            //     label: {
+            //       show: true,
+            //       formatter: function(param) {
+            //         return param.data[2];
+            //       },
+            //       position: 'top'
+            //     }
+            //   },
             };
           }),
         dataset: positionDataSeries.map((positionData) => {
           return {
             source: positionData.data.map((data) => [
               data.rank,
-              data.touchdowns,
+              data.points,
               data.player,
             ]),
           };
         }),
-      });
-      myChart.on("click", function (params) {
-        console.log(params);
       });
     }
   }, []);

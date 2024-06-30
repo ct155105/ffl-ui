@@ -1,15 +1,20 @@
-'use server'
+"use server";
 
-import { RbData, WrData } from '@/types/data';
-import csv from 'csvtojson';
+import { RbData, WrData, PlayerProjection } from "@/types/data";
+import csv from "csvtojson";
 
-const getCsvFilePath = (position: string, year: number): string => {
-  return `/Users/christeuschler/Documents/Projects/ffl-ui/src/data/csv/${position}-${year}.csv`;
-}
+const baseCsvPath =
+  "/Users/christeuschler/Documents/Projects/ffl-ui/src/data/csv/";
+
+const getPositionCsvFilePath = (position: string, year: number): string => {
+  return `${baseCsvPath}${position}-${year}.csv`;
+};
 
 export const getRbData = async (year: number): Promise<RbData[]> => {
-  console.log('getRbData Called');
-  const csvData: any[]  = await csv().fromFile(getCsvFilePath('rb', year))
+  console.log("getRbData Called");
+  const csvData: any[] = await csv().fromFile(
+    getPositionCsvFilePath("rb", year)
+  );
   const data: RbData[] = csvData.map((item: any) => {
     return {
       player: item.player,
@@ -59,24 +64,26 @@ export const getRbData = async (year: number): Promise<RbData[]> => {
       ypa: parseFloat(item.ypa),
       yprr: parseFloat(item.yprr),
       zone_attempts: parseInt(item.zone_attempts),
-      year
-    }
+      year,
+    };
   });
-  return data.filter((player) => player.position === 'HB');
+  return data.filter((player) => player.position === "HB");
 };
 
-export const getAllRbData = async (): Promise<RbData[]> => { 
+export const getAllRbData = async (): Promise<RbData[]> => {
   const data: RbData[] = [];
   for (let i = 2014; i <= 2023; i++) {
     const rbData = await getRbData(i);
     data.push(...rbData);
   }
   return data;
-}
+};
 
 export const getWrData = async (year: number): Promise<WrData[]> => {
-  console.log('getWrData Called');
-  const csvData: any[]  = await csv().fromFile(getCsvFilePath('wr', year))
+  console.log("getWrData Called");
+  const csvData: any[] = await csv().fromFile(
+    getPositionCsvFilePath("wr", year)
+  );
   const data: WrData[] = csvData.map((item: any) => {
     return {
       player: item.player,
@@ -121,11 +128,90 @@ export const getWrData = async (year: number): Promise<WrData[]> => {
       wide_snaps: parseInt(item.wide_snaps),
       yards: parseInt(item.yards),
       yards_after_catch: parseInt(item.yards_after_catch),
-      yards_after_catch_per_reception: parseFloat(item.yards_after_catch_per_reception),
+      yards_after_catch_per_reception: parseFloat(
+        item.yards_after_catch_per_reception
+      ),
       yards_per_reception: parseFloat(item.yards_per_reception),
       yprr: parseFloat(item.yprr),
-      year
-    }
+      year,
+    };
   });
-  return data.filter((player) => player.position === 'WR');
-}
+  return data.filter((player) => player.position === "WR");
+};
+
+export const getPlayerProjections = async (
+  year: number
+): Promise<PlayerProjection[]> => {
+  const csvData: any[] = await csv().fromFile(
+    `${baseCsvPath}projections-${year}.csv`
+  );
+  const data: PlayerProjection[] = csvData.map((item: any) => {
+    return {
+      fantasyPointsRank: parseInt(item.fantasyPointsRank),
+      playerName: item.playerName,
+      teamName: item.teamName,
+      position: item.position,
+      byeWeek: parseInt(item.byeWeek),
+      games: parseInt(item.games),
+      fantasyPoints: parseFloat(item.fantasyPoints),
+      auctionValue: parseFloat(item.auctionValue),
+      passComp: parseInt(item.passComp),
+      passAtt: parseInt(item.passAtt),
+      passYds: parseInt(item.passYds),
+      passTd: parseInt(item.passTd),
+      passInt: parseInt(item.passInt),
+      passSacked: parseInt(item.passSacked),
+      rushAtt: parseInt(item.rushAtt),
+      rushYds: parseInt(item.rushYds),
+      rushTd: parseInt(item.rushTd),
+      recvTargets: parseInt(item.recvTargets),
+      recvReceptions: parseInt(item.recvReceptions),
+      recvYds: parseInt(item.recvYds),
+      recvTd: parseInt(item.recvTd),
+      fumbles: parseInt(item.fumbles),
+      fumblesLost: parseInt(item.fumblesLost),
+      twoPt: parseInt(item.twoPt),
+      returnYds: parseInt(item.returnYds),
+      returnTd: parseInt(item.returnTd),
+      fgMade019: parseInt(item.fgMade019),
+      fgAtt019: parseInt(item.fgAtt019),
+      fgMade2029: parseInt(item.fgMade2029),
+      fgAtt2029: parseInt(item.fgAtt2029),
+      fgMade3039: parseInt(item.fgMade3039),
+      fgAtt3039: parseInt(item.fgAtt3039),
+      fgMade4049: parseInt(item.fgMade4049),
+      fgAtt4049: parseInt(item.fgAtt4049),
+      fgMade50plus: parseInt(item.fgMade50plus),
+      fgAtt50plus: parseInt(item.fgAtt50plus),
+      patMade: parseInt(item.patMade),
+      patAtt: parseInt(item.patAtt),
+      dstSacks: parseInt(item.dstSacks),
+      dstSafeties: parseInt(item.dstSafeties),
+      dstInt: parseInt(item.dstInt),
+      dstFumblesForced: parseInt(item.dstFumblesForced),
+      dstFumblesRecovered: parseInt(item.dstFumblesRecovered),
+      dstTd: parseInt(item.dstTd),
+      dstReturnYds: parseInt(item.dstReturnYds),
+      dstReturnTd: parseInt(item.dstReturnTd),
+      dstPts0: parseInt(item.dstPts0),
+      dstPts16: parseInt(item.dstPts16),
+      dstPts713: parseInt(item.dstPts713),
+      dstPts1420: parseInt(item.dstPts1420),
+      dstPts2127: parseInt(item.dstPts2127),
+      dstPts2834: parseInt(item.dstPts2834),
+      dstPts35plus: parseInt(item.dstPts35plus),
+      idpTacklesSolo: parseInt(item.idpTacklesSolo),
+      idpTacklesAssist: parseInt(item.idpTacklesAssist),
+      idpSacks: parseInt(item.idpSacks),
+      idpTacklesForLoss: parseInt(item.idpTacklesForLoss),
+      idpPassDefended: parseInt(item.idpPassDefended),
+      idpInt: parseInt(item.idpInt),
+      idpFumblesForced: parseInt(item.idpFumblesForced),
+      idpFumblesRecovered: parseInt(item.idpFumblesRecovered),
+      idpSafeties: parseInt(item.idpSafeties),
+      idpTd: parseInt(item.idpTd),
+      year,
+    };
+  });
+  return data;
+};

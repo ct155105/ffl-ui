@@ -9,7 +9,7 @@ export default async function page() {
     return sortedData.slice(0, 60).map((data, index) => ({
         rank: index + 1,
         player: data.player,
-        touchdowns: data.touchdowns,
+        points: data.touchdowns,
     }));
     }
   const rbData = await getRbData(2023);
