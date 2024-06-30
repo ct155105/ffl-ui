@@ -1,9 +1,23 @@
 "use client";
 
+import 'ag-grid-enterprise';
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import { ColDef } from "ag-grid-community"; // Import the ColDef type
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
+import { ColumnsToolPanelModule } from "@ag-grid-enterprise/column-tool-panel";
+import { FiltersToolPanelModule } from "@ag-grid-enterprise/filter-tool-panel";
+import { MenuModule } from "@ag-grid-enterprise/menu";
+import { RowGroupingModule } from "@ag-grid-enterprise/row-grouping";
+import { ModuleRegistry } from "@ag-grid-community/core";
+ModuleRegistry.registerModules([
+  ClientSideRowModelModule,
+  ColumnsToolPanelModule,
+  MenuModule,
+  RowGroupingModule,
+  FiltersToolPanelModule
+]);
 import { RbData, WrData } from "@/types/data"; // Import the data type
 import { colDefsRb, colDefsWr } from "@/grid/colDefs";
 import { getDataType } from "@/utils/getDataType";
@@ -37,7 +51,7 @@ export default function Grid({ data }: { data: RbData[] | WrData[] }) {
       className="ag-theme-quartz" // applying the grid theme
       style={{ height: 500 }} // the grid will fill the size of the parent container
     >
-      <AgGridReact rowData={config.rowData} columnDefs={config.columnDefs} />
+      <AgGridReact rowData={config.rowData} columnDefs={config.columnDefs} sideBar />
     </div>
   );
 }

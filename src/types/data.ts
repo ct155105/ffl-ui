@@ -46,6 +46,7 @@ export type RbData = {
     ypa: number;
     yprr: number;
     zone_attempts: number;
+    year: number;
   }
 
   export type WrData = {

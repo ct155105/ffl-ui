@@ -1,12 +1,15 @@
-import React from 'react'
-import { getRbData } from '@/data/repository'
+import React, { Suspense } from 'react'
+import { getAllRbData } from '@/data/repository'
 import Grid from './Grid'
 
+
 export default async function page() {
-    const data = await getRbData();
-  return (
-    <div>
-        <Grid data={data} />
-    </div>
-  )
+        const data = await getAllRbData();
+    return (
+        <div>
+                <Suspense fallback={<div>Loading...</div>}>
+                        <Grid data={data} />
+                </Suspense>
+        </div>
+    )
 }

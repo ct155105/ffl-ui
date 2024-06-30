@@ -9,8 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "^31.3.2",
+    "@ag-grid-community/core": "^31.3.2",
+    "@ag-grid-enterprise/column-tool-panel": "^31.3.2",
+    "@ag-grid-enterprise/filter-tool-panel": "^31.3.2",
+    "@ag-grid-enterprise/menu": "^31.3.2",
+    "@ag-grid-enterprise/row-grouping": "^31.3.2",
+    "ag-grid-enterprise": "^31.3.2",
     "ag-grid-react": "^31.3.2",
     "csvtojson": "^2.0.10",
+    "echarts": "^5.5.1",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18"

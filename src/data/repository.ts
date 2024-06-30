@@ -7,9 +7,9 @@ const getCsvFilePath = (position: string, year: number): string => {
   return `/Users/christeuschler/Documents/Projects/ffl-ui/src/data/csv/${position}-${year}.csv`;
 }
 
-export const getRbData = async (): Promise<RbData[]> => {
+export const getRbData = async (year: number): Promise<RbData[]> => {
   console.log('getRbData Called');
-  const csvData: any[]  = await csv().fromFile(getCsvFilePath('rb', 2023))
+  const csvData: any[]  = await csv().fromFile(getCsvFilePath('rb', year))
   const data: RbData[] = csvData.map((item: any) => {
     return {
       player: item.player,
@@ -58,15 +58,25 @@ export const getRbData = async (): Promise<RbData[]> => {
       yco_attempt: parseFloat(item.yco_attempt),
       ypa: parseFloat(item.ypa),
       yprr: parseFloat(item.yprr),
-      zone_attempts: parseInt(item.zone_attempts)
+      zone_attempts: parseInt(item.zone_attempts),
+      year
     }
   });
-  return data;
+  return data.filter((player) => player.position === 'HB');
 };
 
-export const getWrData = async (): Promise<WrData[]> => {
+export const getAllRbData = async (): Promise<RbData[]> => { 
+  const data: RbData[] = [];
+  for (let i = 2014; i <= 2023; i++) {
+    const rbData = await getRbData(i);
+    data.push(...rbData);
+  }
+  return data;
+}
+
+export const getWrData = async (year: number): Promise<WrData[]> => {
   console.log('getWrData Called');
-  const csvData: any[]  = await csv().fromFile(getCsvFilePath('wr', 2023))
+  const csvData: any[]  = await csv().fromFile(getCsvFilePath('wr', year))
   const data: WrData[] = csvData.map((item: any) => {
     return {
       player: item.player,
@@ -113,8 +123,9 @@ export const getWrData = async (): Promise<WrData[]> => {
       yards_after_catch: parseInt(item.yards_after_catch),
       yards_after_catch_per_reception: parseFloat(item.yards_after_catch_per_reception),
       yards_per_reception: parseFloat(item.yards_per_reception),
-      yprr: parseFloat(item.yprr)
+      yprr: parseFloat(item.yprr),
+      year
     }
   });
-  return data;
+  return data.filter((player) => player.position === 'WR');
 }
